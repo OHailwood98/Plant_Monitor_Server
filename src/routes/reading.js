@@ -14,7 +14,6 @@ router.post("/add", (req, res) => {
   var hour = data.time.split(":")[0];
   var min = data.time.split(":")[1];
   var dateTime = new Date(yyyy, mm, dd, hour, min);
-  dateTime.setHours(dateTime.getHours() + 1);
 
   const reading = new Reading({
     deviceID: data.deviceID,
