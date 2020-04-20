@@ -9,13 +9,13 @@ const router = express.Router();
 
 router.post("/signup", (req, res) => {
   const { credentials } = req.body;
-  console.log(credentials)
+  //console.log(credentials)
 
   const user = new User({
     email: credentials.email,
     username: credentials.username,
     phone: credentials.phone,
-    devices:{devID:credentials.deviceID, name: credentials.deviceName},
+    devices:[credentials.deviceID],
   });
   if(credentials.contact === "phone"){
     user.contact.email = false;
@@ -94,6 +94,22 @@ router.post("/confirm", (req, res)=>{
       .catch(err =>{
         res.status(400).json({errors: {global:"Token Not Found" }})
       })
+})
+
+router.get("/getdevices", (req, res)=>{
+  var token = decode(req.headers.authorisation);
+  var user = token.username;
+  User.findOne({ username: user }).then(user => {
+    var deviceArr = []
+    for(var i=0; i<user.devices.length; i++){
+      deviceArr.push(user.devices[i])
+    }
+    res.status(200).json({devices:deviceArr})
+  })
+  .catch(err =>{
+    res.status(400).json({errors: {global:"User Not Found" }})
+  })
+
 })
 
 export default router;
