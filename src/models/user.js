@@ -60,5 +60,5 @@ schema.methods.genConfirmUrl = function genConfirmUrl(){
   return ` ${process.env.HOST}/confirmation/${this.EmailConfToken}`
 }
 
-schema.plugin(validator, { message: "duplicate" });
+schema.plugin(validator, { message: "Duplicate" });
 export default mongoose.model("user", schema);

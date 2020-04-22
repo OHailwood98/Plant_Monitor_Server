@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/signup", (req, res) => {
   const { credentials } = req.body;
-  //console.log(credentials)
+  console.log(credentials)
   var deviceArr = []
   deviceArr.push({devID:credentials.deviceID, name: credentials.deviceName})
 
@@ -28,20 +28,28 @@ router.post("/signup", (req, res) => {
     deviceID: credentials.deviceID,
     deviceName: credentials.deviceName
   })
-  user.setPassword(credentials.password);
-  user.setConfirmToken();
-  user
-    .save()
-    .then(user => {
-      device.save()
-        .then(device =>{
-          sendConfirmEmail(user)
-          res.status(200).json({ user: user.toAuthJson() });
+
+  Device.findOne({deviceID: credentials.deviceID}).then(device =>{
+    if(device){
+      res.status(400).json({ errors: {deviceID:{message:"Invalid Device ID"}} })
+      console.log("Found")
+    }else{
+      user.setPassword(credentials.password);
+      user.setConfirmToken();
+      user
+        .save()
+        .then(user => {
+          device.save()
+            .then(device =>{
+              sendConfirmEmail(user)
+              res.status(200).json({ user: user.toAuthJson() });
+            })
+            .catch(err => res.status(400).json({ errors: err.errors }));
         })
         .catch(err => res.status(400).json({ errors: err.errors }));
-    })
-    .catch(err => res.status(400).json({ errors: err.errors }));
-    //res.status(400).json({errors: {global:"its fucked" }})
+    }
+  })
+  .catch(err => res.status(400).json({ errors: err.errors }));
 });
 
 router.post("/login", (req, res) => {
@@ -112,7 +120,6 @@ router.get("/getdevices", (req, res)=>{
   .catch(err =>{
     res.status(400).json({errors: {global:"User Not Found" }})
   })
-  //res.status(400).json({errors: {global:"User Not Found" }})
 })
 
 export default router;
