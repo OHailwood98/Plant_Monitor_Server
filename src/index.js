@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 mongoose.Promise = Promise;
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
-mongoose.connect(process.env.MONGODB_URL_Local, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
 
 app.use("/api/reading", reading);
 
@@ -27,5 +27,5 @@ app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.listen(8080, () => console.log("listening on 8080"));
-//app.listen(process.env.PORT)
+//app.listen(8080, () => console.log("listening on 8080"));
+app.listen(process.env.PORT)
