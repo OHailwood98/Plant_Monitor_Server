@@ -10,12 +10,14 @@ const router = express.Router();
 router.post("/signup", (req, res) => {
   const { credentials } = req.body;
   //console.log(credentials)
+  var deviceArr = []
+  deviceArr.push({devID:credentials.deviceID, name: credentials.deviceName})
 
   const user = new User({
     email: credentials.email,
     username: credentials.username,
     phone: credentials.phone,
-    devices:[credentials.deviceID],
+    devices: deviceArr
   });
   if(credentials.contact === "phone"){
     user.contact.email = false;
@@ -102,14 +104,15 @@ router.get("/getdevices", (req, res)=>{
   User.findOne({ username: user }).then(user => {
     var deviceArr = []
     for(var i=0; i<user.devices.length; i++){
-      deviceArr.push(user.devices[i])
+      var dev = user.devices[i]
+      deviceArr.push({devID:dev.devID, name:dev.name})
     }
     res.status(200).json({devices:deviceArr})
   })
   .catch(err =>{
     res.status(400).json({errors: {global:"User Not Found" }})
   })
-
+  //res.status(400).json({errors: {global:"User Not Found" }})
 })
 
 export default router;
