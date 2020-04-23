@@ -8,6 +8,7 @@ import helmet from "helmet"
 
 import reading from "./routes/reading"
 import user from "./routes/user"
+import device from "./routes/device"
 
 dotenv.config(); 
 
@@ -22,6 +23,8 @@ mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
 app.use("/api/reading", reading);
 
 app.use("/api/user", user);
+
+app.use("/api/device", device)
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
