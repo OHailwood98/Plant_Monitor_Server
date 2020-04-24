@@ -17,10 +17,10 @@ router.post("/deviceinfo", (req, res) => {
                 deviceID: foundDevice.deviceID,
                 deviceName: foundDevice.deviceName,
                 username: foundDevice.username,
-                tempMin: foundDevice.tempMin,
-                tempMax: foundDevice.tempMax,
-                moistMin: foundDevice.moistMin,
-                moistMax: foundDevice.moistMax
+                tempMin: foundDevice.tempMin.toString(),
+                tempMax: foundDevice.tempMax.toString(),
+                moistMin: foundDevice.moistMin.toString(),
+                moistMax: foundDevice.moistMax.toString()
             }
             res.status(200).json({device: newDev})
         }else{
