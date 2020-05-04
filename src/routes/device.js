@@ -54,7 +54,6 @@ router.post("/adddevice", (req,res) =>{
             .catch(err => res.status(400).json({ errors: err.errors })); 
         })
         .catch(err => res.status(400).json({ errors: err.errors })); 
-    //res.status(400).json({ errors: { global: "its fucked" } });
 })
 
 router.post("/editdevice", (req,res) =>{
@@ -70,8 +69,13 @@ router.post("/editdevice", (req,res) =>{
         moistMin: parseInt(device.moistMin),
         moistMax: parseInt(device.moistMax),
     },function(result){
-        //User.findOneAndUpdate({devices.devID: device.deviceID}, {})
-        res.status(200).json({success: true})  
+        User.findOneAndUpdate({"devices.devID": device.deviceID},
+        {
+            "devices.$.name": device.deviceName
+        },function(result){
+            res.status(200).json({success: true})  
+        })
+        .catch(err => res.status(400).json({ errors: err.errors }));
     })
     .catch(err => res.status(400).json({ errors: err.errors })); 
 
