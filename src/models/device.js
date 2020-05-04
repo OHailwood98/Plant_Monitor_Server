@@ -14,5 +14,5 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-schema.plugin(validator, { message: "Duplicate" });
+schema.plugin(validator, { message: "Invalid ID" });
 export default mongoose.model("device", schema);
