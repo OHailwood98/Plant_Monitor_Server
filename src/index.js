@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 mongoose.Promise = Promise;
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
+mongoose.set('useFindAndModify', false);
 mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
 
 app.use("/api/reading", reading);

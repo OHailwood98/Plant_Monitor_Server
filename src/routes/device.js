@@ -57,4 +57,24 @@ router.post("/adddevice", (req,res) =>{
     //res.status(400).json({ errors: { global: "its fucked" } });
 })
 
+router.post("/editdevice", (req,res) =>{
+    var device = req.body.device
+    var token = decode(req.headers.authorisation);
+    var user = token.username;
+
+    Device.findOneAndUpdate({deviceID:device.deviceID, username:user},
+    {
+        deviceName: device.deviceName,
+        tempMin: parseInt(device.tempMin),
+        tempMax: parseInt(device.tempMax),
+        moistMin: parseInt(device.moistMin),
+        moistMax: parseInt(device.moistMax),
+    },function(result){
+        //User.findOneAndUpdate({devices.devID: device.deviceID}, {})
+        res.status(200).json({success: true})  
+    })
+    .catch(err => res.status(400).json({ errors: err.errors })); 
+
+})
+
 export default router;
