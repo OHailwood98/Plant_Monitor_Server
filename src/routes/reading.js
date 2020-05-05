@@ -59,7 +59,7 @@ router.post("/addmany", (req, res) => {
   res.status(400).json({ errors: "its fucked" });
 });
 
-router.get("/getOneDay", (req, res) => {
+router.get("/getoneday", (req, res) => {
   var lte = new Date();
   lte.setHours(0);
   lte.setMinutes(0);
@@ -97,7 +97,7 @@ router.get("/getOneDay", (req, res) => {
     });
 });
 
-router.get("/getOneWeek", (req, res) => {
+router.get("/getoneweek", (req, res) => {
   var lte = new Date();
   lte.setHours(0);
   lte.setMinutes(0);
@@ -135,7 +135,7 @@ router.get("/getOneWeek", (req, res) => {
     });
 });
 
-router.get("/getOneMonth", (req, res) => {
+router.get("/getonemonth", (req, res) => {
   var lte = new Date();
   lte.setHours(0);
   lte.setMinutes(0);
