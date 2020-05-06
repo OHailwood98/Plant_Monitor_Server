@@ -9,7 +9,6 @@ const router = express.Router();
 
 router.post("/signup", (req, res) => {
   const { credentials } = req.body;
-  console.log(credentials)
   var deviceArr = []
   deviceArr.push({devID:credentials.deviceID, name: credentials.deviceName})
 
@@ -24,22 +23,22 @@ router.post("/signup", (req, res) => {
     user.contact.phone = true;
   }
 
-  const device = new Device({
+  const newDevice = new Device({
     deviceID: credentials.deviceID,
-    deviceName: credentials.deviceName
+    deviceName: credentials.deviceName,
+    username: credentials.username
   })
 
   Device.findOne({deviceID: credentials.deviceID}).then(device =>{
     if(device){
       res.status(400).json({ errors: {deviceID:{message:"Invalid Device ID"}} })
-      console.log("Found")
     }else{
       user.setPassword(credentials.password);
       user.setConfirmToken();
       user
         .save()
         .then(user => {
-          device.save()
+          newDevice.save()
             .then(device =>{
               sendConfirmEmail(user)
               res.status(200).json({ user: user.toAuthJson() });

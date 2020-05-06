@@ -59,7 +59,8 @@ router.post("/addmany", (req, res) => {
   res.status(400).json({ errors: "its fucked" });
 });
 
-router.get("/getoneday", (req, res) => {
+router.post("/getoneday", (req, res) => {
+  var {id} = req.body;
   var lte = new Date();
   lte.setHours(0);
   lte.setMinutes(0);
