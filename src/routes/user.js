@@ -9,14 +9,11 @@ const router = express.Router();
 
 router.post("/signup", (req, res) => {
   const { credentials } = req.body;
-  var deviceArr = []
-  deviceArr.push({devID:credentials.deviceID, name: credentials.deviceName})
 
   const user = new User({
     email: credentials.email,
     username: credentials.username,
     phone: credentials.phone,
-    devices: deviceArr
   });
   if(credentials.contact === "phone"){
     user.contact.email = false;
@@ -108,12 +105,11 @@ router.post("/confirm", (req, res)=>{
 router.get("/getdevices", (req, res)=>{
   var token = decode(req.headers.authorisation);
   var user = token.username;
-  User.findOne({ username: user }).then(user => {
+  Device.find({ username: user }).then(devices => {
     var deviceArr = []
-    for(var i=0; i<user.devices.length; i++){
-      var dev = user.devices[i]
-      deviceArr.push({devID:dev.devID, name:dev.name})
-    }
+    devices.forEach(device =>{
+      deviceArr.push({devID: device.deviceID, name: device.deviceName})
+    })
     res.status(200).json({devices:deviceArr})
   })
   .catch(err =>{

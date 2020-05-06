@@ -43,15 +43,7 @@ router.post("/adddevice", (req,res) =>{
 
     device.save()
         .then(dev=>{
-            User.findOne({username: user}).then(user=>{
-                user.devices.push({devID:newDevice.deviceID, name:newDevice.deviceName})
-                user.save()
-                    .then(user =>{
-                        res.status(200).json({success: true})  
-                    })
-                    .catch(err => res.status(400).json({ errors: err.errors })); 
-            })
-            .catch(err => res.status(400).json({ errors: err.errors })); 
+            res.status(200).json({success: true})  
         })
         .catch(err => res.status(400).json({ errors: err.errors })); 
 })
@@ -69,13 +61,7 @@ router.post("/editdevice", (req,res) =>{
         moistMin: parseInt(device.moistMin),
         moistMax: parseInt(device.moistMax),
     },function(result){
-        User.findOneAndUpdate({"devices.devID": device.deviceID},
-        {
-            "devices.$.name": device.deviceName
-        },function(result){
-            res.status(200).json({success: true})  
-        })
-        .catch(err => res.status(400).json({ errors: err.errors }));
+        res.status(200).json({success: true})  
     })
     .catch(err => res.status(400).json({ errors: err.errors })); 
 

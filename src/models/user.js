@@ -11,7 +11,6 @@ const schema = new mongoose.Schema(
     EmailConfToken: {type:String, default: ""},
     passwordHash: { type: String, required: true },
     phone: { type: String, required: true },
-    devices:[{devID:{type: String}, name:{type: String}}],
     contact:{
       email:{type: Boolean, default:true},
       phone:{type: Boolean, default:false}
