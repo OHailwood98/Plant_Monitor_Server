@@ -1,66 +1,42 @@
 import express from "express";
+import decode from "jwt-decode";
+
 import Reading from "../models/reading";
+import Device from "../models/device";
 
 const router = express.Router();
 
 router.post("/add", (req, res) => {
   const { data } = req.body;
-  //console.dir(req.body);
   var date = new Date();
 
-  var dd = date.getDate();
-  var mm = date.getMonth();
-  var yyyy = date.getFullYear();
   var hour = data.time.split(":")[0];
   var min = data.time.split(":")[1];
-  var dateTime = new Date(yyyy, mm, dd, hour, min);
+  date.setHours(hour);
+  date.setMinutes(min);
+  date.setSeconds(0);
 
   const reading = new Reading({
     deviceID: data.deviceID,
     temperature: parseInt(data.temp),
     moisture: parseInt(data.moisture),
     light: parseInt(data.light),
-    time: dateTime,
+    time: date
   });
 
   reading
     .save()
     .then((reading) => {
-      res.status(200).json({ success: true });
+      res.status(200);
     })
-    .catch((err) => res.status(400).json({ errors: err.errors }));
-});
-
-router.post("/addmany", (req, res) => {
-  const { data } = req.body;
-
-  var hour = data.time.split(":")[0];
-  var min = data.time.split(":")[1];
-
-  for (var i = 0; i < 8; i++) {
-    var date = new Date();
-    var dd = date.getDate();
-    var mm = date.getMonth();
-    var yyyy = date.getFullYear();
-    var dateTime = new Date(yyyy, mm, dd, hour, min);
-    dateTime.setHours(hour + 1);
-
-    dateTime.setDate(dateTime.getDate() - i);
-    const reading = new Reading({
-      deviceID: data.deviceID,
-      temperature: data.temp,
-      moisture: data.moisture,
-      light: data.light,
-      time: dateTime,
-    });
-    reading.save();
-  }
-
-  res.status(400).json({ errors: "its fucked" });
+    .catch((err) => res.status(400));
 });
 
 router.post("/getoneday", (req, res) => {
   var {id} = req.body;
+  var token = decode(req.headers.authorisation);
+  var user = token.username;
+
   var lte = new Date();
   lte.setHours(0);
   lte.setMinutes(0);
@@ -72,6 +48,13 @@ router.post("/getoneday", (req, res) => {
 
   var timeArray = [];
   var averageTimes = [];
+
+  Device.findOne({deviceID: id, username: user})
+    .then(device =>{
+      if(device){
+
+      }
+    })
 
   Reading.find({ time: { $gte: gte.toISOString(), $lte: lte.toISOString() } })
     .sort({ time: -1 })
