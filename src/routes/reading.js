@@ -338,6 +338,10 @@ function averageReadings(times) {
   temperature = temperature / len;
   light = light / len;
 
+  moisture = Math.round(moisture * 10) / 10
+  temperature = Math.round(temperature * 10) / 10
+  light = Math.round(light * 10) / 10
+
   var averageReading = {
     deviceID: id,
     moisture: moisture,
