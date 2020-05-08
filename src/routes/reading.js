@@ -55,7 +55,6 @@ router.post("/getoneday", (req, res) => {
         Reading.find({deviceID:id, time: { $gte: gte.toISOString(), $lte: lte.toISOString() } })
           .sort({ time: -1 })
           .then((times) => {
-            console.dir(times)
             times.forEach((time) => {
               var newTime = {
                 deviceID: time.deviceID,
@@ -102,7 +101,6 @@ router.post("/getoneweek", (req, res) => {
       Reading.find({deviceID:id, time: { $gte: gte.toISOString(), $lte: lte.toISOString() } })
         .sort({ time: -1 })
         .then((times) => {
-          console.dir(times)
           times.forEach((time) => {
             var newTime = {
               deviceID: time.deviceID,
@@ -151,7 +149,6 @@ router.post("/getonemonth", (req, res) => {
       Reading.find({deviceID:id, time: { $gte: gte.toISOString(), $lte: lte.toISOString() } })
         .sort({ time: -1 })
         .then((times) => {
-          console.dir(times)
           times.forEach((time) => {
             var newTime = {
               deviceID: time.deviceID,
