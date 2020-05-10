@@ -201,6 +201,7 @@ function getDayAverage(times, hour) {
     return averageReading;
   } else {
     var average = averageReadings(chosenTimes);
+    average.time.setMinutes(0);
     return average;
   }
 }
