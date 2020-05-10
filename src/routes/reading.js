@@ -175,21 +175,28 @@ router.post("/getonemonth", (req, res) => {
 function getDayAverage(times, hour) {
   var chosenTimes = [];
   var day = new Date();
+
   day.setDate(day.getDate() - 1);
   day.setHours(hour);
   day.setMinutes(0);
+
+  var timeStr = day.toLocaleDateString();
+  timeStr += `, ${hour}:00`
+
   times.forEach((time) => {
     if (time.time.getHours() === hour) {
       chosenTimes.push(time);
     }
   });
+
   if (chosenTimes.length === 0) {
     var averageReading = {
       deviceID: 0,
       moisture: 0,
       temperature: 0,
       light: 0,
-      time: day,
+      time: hour+":00",
+      name: timeStr
     };
     return averageReading;
   } else {
