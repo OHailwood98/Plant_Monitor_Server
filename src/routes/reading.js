@@ -55,21 +55,25 @@ router.post("/getoneday", (req, res) => {
         Reading.find({deviceID:id, time: { $gte: gte.toISOString(), $lte: lte.toISOString() } })
           .sort({ time: -1 })
           .then((times) => {
-            times.forEach((time) => {
-              var newTime = {
-                deviceID: time.deviceID,
-                temperature: time.temperature,
-                moisture: time.moisture,
-                light: time.light,
-                time: time.time,
-              };
-              timeArray.push(newTime);
-            });
-            for (var i = 0; i < 24; i++) {
-              var time = getDayAverage(timeArray, i);
-              averageTimes.push(time);
+            if(times.length > 0){
+              times.forEach((time) => {
+                var newTime = {
+                  deviceID: time.deviceID,
+                  temperature: time.temperature,
+                  moisture: time.moisture,
+                  light: time.light,
+                  time: time.time,
+                };
+                timeArray.push(newTime);
+              });
+              for (var i = 0; i < 24; i++) {
+                var time = getDayAverage(timeArray, i);
+                averageTimes.push(time);
+              }
+              res.status(200).json({ timeList: averageTimes });
+            }else{
+              res.status(400).json({ errors: {global: "Sorry. No Readings found for this Device"} })
             }
-            res.status(200).json({ timeList: averageTimes });
           })
           .catch((err) => res.status(400).json({ errors: {global: "Server Error. Try Again"} }));
       }else{
@@ -114,6 +118,7 @@ router.post("/getoneweek", (req, res) => {
           for (var i = 1; i < 8; i++) {
             var time = getWeekAverage(timeArray, i);
             averageTimes.push(time);
+            //averageTimes = [].concat(averageTimes, time)
           }
           res.status(200).json({ timeList: averageTimes });
         })
