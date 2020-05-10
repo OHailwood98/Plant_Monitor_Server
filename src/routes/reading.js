@@ -346,18 +346,12 @@ function averageReadings(times) {
   temperature = Math.round(temperature * 10) / 10
   light = Math.round(light * 10) / 10
 
-  var averageTime = times[0].time;
-  var hour = averageTime.getHours();
-  var timeStr = averageTime.toLocaleDateString();
-  timeStr += `, ${hour}:00`
-
   var averageReading = {
     deviceID: id,
     moisture: moisture,
     temperature: temperature,
     light: light,
-    time: hour+":00",
-    name: timeStr
+    time: times[0].time,
   };
 
   return averageReading;
