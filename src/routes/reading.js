@@ -158,23 +158,55 @@ router.post("/getonemonth", (req, res) => {
       Reading.find({deviceID:id, time: { $gte: gte.toISOString(), $lte: lte.toISOString() } })
         .sort({ time: -1 })
         .then((times) => {
-          times.forEach((time) => {
-            var newTime = {
-              deviceID: time.deviceID,
-              temperature: time.temperature,
-              moisture: time.moisture,
-              light: time.light,
-              time: time.time,
-            };
-            timeArray.push(newTime);
-          });
-          for (var i = 1; i <= DiM; i++) {
-            var time = getMonthAverage(timeArray, i);
-            averageTimes.push(time);
+          if(times.length > 0){
+            times.forEach((time) => {
+              var newTime = {
+                deviceID: time.deviceID,
+                temperature: time.temperature,
+                moisture: time.moisture,
+                light: time.light,
+                time: time.time,
+              };
+              timeArray.push(newTime);
+            });
+            for (var i = 1; i <= DiM; i++) {
+              var time = getMonthAverage(timeArray, i);
+              averageTimes.push(time);
+            }
+            res.status(200).json({ timeList: averageTimes });
+          }else{
+            res.status(400).json({ errors: {global: "Sorry. No Readings found for this Device"} })
           }
-          res.status(200).json({ timeList: averageTimes });
         })
         .catch((err) => res.status(400).json({ errors: {global: "Server Error. Try Again"} }));
+    }else{
+      res.status(400).json({ errors: {global: "Invalid ID"} });
+    }
+  })
+});
+
+router.post("/getmostrecent", (req, res) => {
+  var {id} = req.body;
+  var token = decode(req.headers.authorisation);
+  var user = token.username;
+
+  Device.findOne({deviceID: id, username: user})
+  .then(device =>{
+    if(device){
+      Reading.find({deviceID:id})
+        .sort({ time: -1 })
+        .then((times) => {
+          if(times.length > 0){
+            var recentTime = times[0]
+            res.status(200).json({ recentTime });
+          }else{
+            res.status(400).json({ errors: {global: "Sorry. No Readings found for this Device"} })
+          }
+        })
+        .catch((err) => {
+          console.dir(err)
+          res.status(400).json({ errors: {global: "Server Error. Try Again"} })
+        });
     }else{
       res.status(400).json({ errors: {global: "Invalid ID"} });
     }
