@@ -1,6 +1,7 @@
+import Moment from "moment"
+
 import Device from "./models/device"
 import User from "./models/user"
-
 import {sendReadingAlert} from "./mailer";
 import {emailAlert} from "./AlertBuilder"
 
@@ -13,17 +14,17 @@ export function checkRanges(reading){
                 var moistCheck = checkMoist(reading.moisture, device.moistMin, device.moistMax)
                 
                 if(moistCheck == 1){
-                    emailAlert(user, device, "wet")
+                    checkAlertTime(user, device, "wet")
                 }
                 if(moistCheck == -1){
-                    emailAlert(user, device, "dry")
+                    checkAlertTime(user, device, "dry")
                 }
 
                 if(tempCheck == 1){
-                    emailAlert(user, device, "hot")
+                    checkAlertTime(user, device, "hot")
                 }
                 if(tempCheck == -1){
-                    emailAlert(user, device, "cold")
+                    checkAlertTime(user, device, "cold")
                 }
             })
         })
@@ -51,4 +52,23 @@ function checkMoist(moisture, moistMin, moistMax){
     }else{
         return 0;
     }
+}
+
+function checkAlertTime(user, device, type){
+    var currentTime = new Date();
+    currentTime.setTime( currentTime.getTime() - new Date().getTimezoneOffset()*60*1000 );
+    if(device.lastMessage){
+        var lastTime = Moment(device.lastMessage);
+        var duration = Math.abs(lastTime.diff(currentTime, 'hours', true));
+        if(duration > 2){
+            emailAlert(user, device, type);
+            Device.findOneAndUpdate({deviceID:device.deviceID}, {lastMessage: currentTime})
+                .catch(err =>{})
+        }
+    }else{
+        emailAlert(user, device, type);
+        Device.findOneAndUpdate({deviceID:device.deviceID}, {lastMessage: currentTime})
+            .catch(err =>{})
+    }
+
 }

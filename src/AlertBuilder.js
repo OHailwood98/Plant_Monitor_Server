@@ -27,8 +27,8 @@ const tooHot = [
     "Christ on a bike, I'm sweating like a dyslexic on Countdown",
     "You need to open a window in here, its boiling!",
     "I know how one of those rotisserie chickens feel now!",
-    " you'll love the window sill they said, its nice and sunny they said, they didn't tell me I was going to roast up here!",
-    "I honestly don't know how those pineapple plants do it, the heat is going to make me pass out any second."
+    "You'll love the window sill they said, its nice and sunny they said, they didn't tell me I was going to roast up here!",
+    "I honestly don't know how those pineapple plants do it, the heat is making me wilt already."
 ]
 
 export function emailAlert(user, device, type){
