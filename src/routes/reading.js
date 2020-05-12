@@ -4,6 +4,8 @@ import decode from "jwt-decode";
 import Reading from "../models/reading";
 import Device from "../models/device";
 
+import {checkRanges} from "../ConditionChecker"
+
 const router = express.Router();
 
 router.post("/add", (req, res) => {
@@ -27,6 +29,7 @@ router.post("/add", (req, res) => {
   reading
     .save()
     .then((reading) => {
+      checkRanges(reading)
       res.status(200).json({success: true});
     })
     .catch((err) => res.status(400));
@@ -197,7 +200,13 @@ router.post("/getmostrecent", (req, res) => {
         .sort({ time: -1 })
         .then((times) => {
           if(times.length > 0){
-            var recentTime = times[0]
+            var recentTime ={
+              deviceID:times[0].deviceID,
+              light:times[0].light,
+              moisture:times[0].moisture,
+              temperature:times[0].temperature,
+              time:times[0].time,
+            }
             res.status(200).json({ recentTime });
           }else{
             res.status(400).json({ errors: {global: "Sorry. No Readings found for this Device"} })

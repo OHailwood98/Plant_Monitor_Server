@@ -10,6 +10,8 @@ const schema = new mongoose.Schema(
     tempMax: { type: Number, default: 0 },
     moistMin: { type: Number, default: 0 },
     moistMax: { type: Number, default: 0 },
+    url: { type: String},
+    lastMessage:{ type: Date }
   },
   { timestamps: true }
 );

@@ -1,5 +1,6 @@
 import express from "express";
 import decode from "jwt-decode";
+import Axios from "axios";
 
 import Device from "../models/device"
 import User from "../models/user"
@@ -65,6 +66,23 @@ router.post("/editdevice", (req,res) =>{
     })
     .catch(err => res.status(400).json({ errors: err.errors })); 
 
+})
+
+router.post("/water", (req,res) =>{
+    var {id} = req.body
+    var token = decode(req.headers.authorisation);
+    var user = token.username;
+
+    Device.findOne({deviceID:id, username:user})
+        .then(device =>{
+            if(device){
+                var url = device.url + "/pump"
+                
+            }else{
+                res.status(400).json({ errors: {global: "Device Not Found"} })
+            }
+        })
+        .catch(err => res.status(400).json({ errors: err.errors })); 
 })
 
 export default router;
