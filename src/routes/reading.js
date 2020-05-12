@@ -284,7 +284,7 @@ function getWeekAverage(times, day) {
   } else {
     AM6 = averageReadings(AM6);
   }
-  AM6.time.setHours(3);
+  AM6.time.setHours(2);
   AM6.time.setMinutes(0);
   average.push(AM6);
 
@@ -299,7 +299,7 @@ function getWeekAverage(times, day) {
   } else {
     AM12 = averageReadings(AM12);
   }
-  AM12.time.setHours(9);
+  AM12.time.setHours(8);
   AM12.time.setMinutes(0);
   average.push(AM12);
 
@@ -314,7 +314,7 @@ function getWeekAverage(times, day) {
   } else {
     PM6 = averageReadings(PM6);
   }
-  PM6.time.setHours(15);
+  PM6.time.setHours(14);
   PM6.time.setMinutes(0);
   average.push(PM6);
 
@@ -329,7 +329,7 @@ function getWeekAverage(times, day) {
   } else {
     PM12 = averageReadings(PM12);
   }
-  PM12.time.setHours(21);
+  PM12.time.setHours(20);
   PM12.time.setMinutes(0);
   average.push(PM12);
 
@@ -341,7 +341,7 @@ function getMonthAverage(times, day) {
 
   var day2find = new Date();
   day2find.setDate(day2find.getDate() - day);
-  day2find.setHours(12);
+  day2find.setHours(11);
   day2find.setMinutes(0);
 
   times.forEach((time) => {
