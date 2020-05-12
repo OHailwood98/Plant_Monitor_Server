@@ -1,4 +1,5 @@
 import {sendReadingAlert} from "./mailer";
+import {sendTextAlert} from "./Clockwork"
 
 const tooWet = [
     "Get me out of here quick! I've almost got trench-root!",
@@ -31,23 +32,43 @@ const tooHot = [
     "I honestly don't know how those pineapple plants do it, the heat is making me wilt already."
 ]
 
-export function emailAlert(user, device, type){
+export function Alert(user, device, type){
     switch(type){
         case "wet":
             var message = tooWet[Math.floor(Math.random() * tooWet.length)];
-            sendReadingAlert(user, device, message, "Soil Moisture is too high")
+            if(user.contact.email){
+                sendReadingAlert(user, device, message, "Soil Moisture is too high")
+            }else{
+                message += " (Soil Moisture is too high)"
+                sendTextAlert(user, message )
+            }
             break;
         case "dry":
             var message = tooDry[Math.floor(Math.random() * tooDry.length)];
-            sendReadingAlert(user, device, message, "Soil Moisture is too low")
+            if(user.contact.email){
+                sendReadingAlert(user, device, message, "Soil Moisture is too low")
+            }else{
+                message += " (Soil Moisture is too low)"
+                sendTextAlert(user, message )
+            }
             break;
         case "hot":
             var message = tooHot[Math.floor(Math.random() * tooHot.length)];
-            sendReadingAlert(user, device, message, "Temperature is too high")
+            if(user.contact.email){
+                sendReadingAlert(user, device, message, "Temperature is too high")
+            }else{
+                message += " (Temperature is too high)"
+                sendTextAlert(user, message )
+            }
             break;
         case "cold":
             var message = tooCold[Math.floor(Math.random() * tooCold.length)];
-            sendReadingAlert(user, device, message, "Temperature is too low")
+            if(user.contact.email){
+                sendReadingAlert(user, device, message, "Temperature is too low")
+            }else{
+                message += " (Temperature is too low)"
+                sendTextAlert(user, message )
+            }
             break;
     }
 

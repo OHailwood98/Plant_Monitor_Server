@@ -2,8 +2,7 @@ import Moment from "moment"
 
 import Device from "./models/device"
 import User from "./models/user"
-import {sendReadingAlert} from "./mailer";
-import {emailAlert} from "./AlertBuilder"
+import {Alert} from "./AlertBuilder"
 
 export function checkRanges(reading){
     Device.findOne({deviceID:reading.deviceID})
@@ -61,12 +60,12 @@ function checkAlertTime(user, device, type){
         var lastTime = Moment(device.lastMessage);
         var duration = Math.abs(lastTime.diff(currentTime, 'hours', true));
         if(duration > 2){
-            emailAlert(user, device, type);
+            Alert(user, device, type);
             Device.findOneAndUpdate({deviceID:device.deviceID}, {lastMessage: currentTime})
                 .catch(err =>{})
         }
     }else{
-        emailAlert(user, device, type);
+        Alert(user, device, type);
         Device.findOneAndUpdate({deviceID:device.deviceID}, {lastMessage: currentTime})
             .catch(err =>{})
     }

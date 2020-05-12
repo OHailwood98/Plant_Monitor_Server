@@ -41,7 +41,7 @@ export function sendReadingAlert(user, device, message, simplified){
       Wiew your plant's condition here: http://localhost:3000.
       
 
-      this is an automated email, please do not respond.
+      This is an automated email, please do not respond.
       `
   }
   transport.sendMail(email);
