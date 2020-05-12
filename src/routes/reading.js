@@ -121,7 +121,6 @@ router.post("/getoneweek", (req, res) => {
             });
             for (var i = 1; i < 8; i++) {
               var time = getWeekAverage(timeArray, i);
-              //averageTimes.push(time);
               averageTimes = [].concat(averageTimes, time)
             }
             res.status(200).json({ timeList: averageTimes });
@@ -284,7 +283,7 @@ function getWeekAverage(times, day) {
   } else {
     AM6 = averageReadings(AM6);
   }
-  AM6.time.setHours(3);
+  AM6.time.setHours(2);
   AM6.time.setMinutes(0);
   average.push(AM6);
 
@@ -299,7 +298,7 @@ function getWeekAverage(times, day) {
   } else {
     AM12 = averageReadings(AM12);
   }
-  AM12.time.setHours(9);
+  AM12.time.setHours(8);
   AM12.time.setMinutes(0);
   average.push(AM12);
 
@@ -314,7 +313,7 @@ function getWeekAverage(times, day) {
   } else {
     PM6 = averageReadings(PM6);
   }
-  PM6.time.setHours(15);
+  PM6.time.setHours(14);
   PM6.time.setMinutes(0);
   average.push(PM6);
 
@@ -329,7 +328,7 @@ function getWeekAverage(times, day) {
   } else {
     PM12 = averageReadings(PM12);
   }
-  PM12.time.setHours(21);
+  PM12.time.setHours(20);
   PM12.time.setMinutes(0);
   average.push(PM12);
 
