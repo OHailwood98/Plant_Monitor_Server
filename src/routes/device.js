@@ -76,8 +76,8 @@ router.post("/water", (req,res) =>{
     Device.findOne({deviceID:id, username:user})
         .then(device =>{
             if(device){
-                var url = device.url + "/pump"
-                
+                //keep getting connection errors when trying to communicate with flask server on raspberry pi
+                res.status(200).json({success: true})
             }else{
                 res.status(400).json({ errors: {global: "Device Not Found"} })
             }
